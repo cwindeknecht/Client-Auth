@@ -2,7 +2,7 @@ import axios from 'axios';
 // Fixes an issue with axios and express-session where sessions
 // would not persist between routes
 axios.defaults.withCredentials = true;
-const ROOT_URL = 'http://localhost:3000';
+const ROOT_URL = 'http://localhost:5000';
 
 export const USER_REGISTERED = 'USER_REGISTERED';
 export const USER_AUTHENTICATED = 'USER_AUTHENTICATED';
@@ -26,7 +26,8 @@ export const register = (username, password, confirmPassword, history) => {
     }
     axios
       .post(`${ROOT_URL}/users`, { username, password })
-      .then(() => {
+      .then(user => {
+        console.log("FIRING USER", user);
         dispatch({
           type: USER_REGISTERED
         });
