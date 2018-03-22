@@ -44,7 +44,8 @@ export const login = (username, password, history) => {
       .post(`${ROOT_URL}/api/login`, { username, password })
       .then((res) => {
         let AUTH_TOKEN = res.data.token;
-        axios.defaults.headers.common['Authorization'] = AUTH_TOKEN;
+        // axios.defaults.headers.common['Authorization'] = AUTH_TOKEN;
+        localStorage.setItem('token', AUTH_TOKEN);
         dispatch({
           type: USER_AUTHENTICATED
         });
@@ -73,9 +74,10 @@ export const logout = () => {
 };
 
 export const getUsers = () => {
+  const token = localStorage.getItem("token");
   return dispatch => {
     axios
-      .get(`${ROOT_URL}/api/users`)
+      .get(`${ROOT_URL}/api/users`, axios.defaults.headers.common['Authorization'] = token)
       .then(response => {
         dispatch({
           type: GET_USERS,
