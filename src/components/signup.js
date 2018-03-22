@@ -50,7 +50,6 @@ class SignUp extends Component {
 const mapStateToProps = state => {
   return {
     error: state.auth.error,
-    authenticated: state.auth.authenticated,
   };
 };
 

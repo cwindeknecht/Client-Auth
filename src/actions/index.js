@@ -25,9 +25,8 @@ export const register = (username, password, confirmPassword, history) => {
       return;
     }
     axios
-      .post(`${ROOT_URL}/users`, { username, password })
+      .post(`${ROOT_URL}/api/users`, { username, password })
       .then(user => {
-        console.log("FIRING USER", user);
         dispatch({
           type: USER_REGISTERED
         });
@@ -42,11 +41,14 @@ export const register = (username, password, confirmPassword, history) => {
 export const login = (username, password, history) => {
   return dispatch => {
     axios
-      .post(`${ROOT_URL}/login`, { username, password })
-      .then(() => {
+      .post(`${ROOT_URL}/api/login`, { username, password })
+      .then((res) => {
+        let AUTH_TOKEN = res.data.token;
+        axios.defaults.headers.common['Authorization'] = AUTH_TOKEN;
         dispatch({
           type: USER_AUTHENTICATED
         });
+        console.log("Youre logged in");
         history.push('/users');
       })
       .catch(() => {
@@ -73,7 +75,7 @@ export const logout = () => {
 export const getUsers = () => {
   return dispatch => {
     axios
-      .get(`${ROOT_URL}/restricted/users`)
+      .get(`${ROOT_URL}/api/users`)
       .then(response => {
         dispatch({
           type: GET_USERS,
